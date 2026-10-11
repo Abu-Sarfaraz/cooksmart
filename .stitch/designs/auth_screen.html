@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CookSmart - Sign In</title>
+<!-- Plus Jakarta Sans Font -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container": "#201f21",
+            "surface-container-low": "#1b1b1d",
+            "surface-bright": "#39393b",
+            "inverse-surface": "#e5e1e4",
+            "outline-variant": "#5a4136",
+            "tertiary-fixed-dim": "#c7c5d0",
+            "primary-fixed": "#ffdbcc",
+            "tertiary-container": "#9998a2",
+            "surface": "#131315",
+            "surface-tint": "#ffb693",
+            "background": "#131315",
+            "on-tertiary-fixed-variant": "#46464f",
+            "surface-container-high": "#2a2a2c",
+            "primary": "#ffb693",
+            "on-secondary-container": "#5a4100",
+            "tertiary": "#c7c5d0",
+            "on-primary-fixed": "#351000",
+            "on-primary-fixed-variant": "#7a3000",
+            "secondary-fixed-dim": "#f9bd22",
+            "inverse-primary": "#a04100",
+            "secondary-container": "#e3aa00",
+            "error-container": "#93000a",
+            "on-surface-variant": "#e2bfb0",
+            "on-primary": "#561f00",
+            "on-surface": "#e5e1e4",
+            "surface-dim": "#131315",
+            "secondary-fixed": "#ffdf9f",
+            "on-error": "#690005",
+            "surface-container-lowest": "#0e0e10",
+            "secondary": "#ffc640",
+            "on-background": "#e5e1e4",
+            "error": "#ffb4ab",
+            "tertiary-fixed": "#e4e1ec",
+            "primary-container": "#ff6b00",
+            "on-secondary-fixed": "#261a00",
+            "on-tertiary-fixed": "#1b1b22",
+            "surface-container-highest": "#353437",
+            "on-primary-container": "#572000",
+            "surface-variant": "#353437",
+            "on-secondary": "#402d00",
+            "on-tertiary": "#303038",
+            "inverse-on-surface": "#303032",
+            "on-error-container": "#ffdad6",
+            "on-secondary-fixed-variant": "#5c4300",
+            "outline": "#a98a7d",
+            "primary-fixed-dim": "#ffb693",
+            "on-tertiary-container": "#313039"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter": "1rem",
+            "space-xs": "0.25rem",
+            "margin": "1rem",
+            "space-xl": "2rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem"
+          },
+          "fontFamily": {
+            "label-lg": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "display": ["Plus Jakarta Sans"],
+            "display-mobile": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "display": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "display-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-fill {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased selection:bg-primary-container selection:text-white min-h-screen flex flex-col justify-between overflow-x-hidden">
+<!-- Culinary Glow Ambient Orbs (Background Precision) -->
+<div class="fixed top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-primary-container/10 rounded-full blur-[100px] pointer-events-none -z-10"></div>
+<div class="fixed -bottom-20 right-0 w-80 h-80 bg-secondary-container/5 rounded-full blur-[90px] pointer-events-none -z-10"></div>
+<!-- Mobile Frame Container -->
+<div class="w-full max-w-md mx-auto flex flex-col min-h-screen px-margin pb-space-lg relative">
+<!-- Header: Minimalist Top Bar -->
+<header class="w-full pt-space-md pb-space-sm flex items-center justify-between">
+<button aria-label="Go Back" class="w-11 h-11 rounded-xl bg-surface-container border border-surface-container-high text-on-surface flex items-center justify-center active:scale-95 hover:border-primary-container/40 transition-all duration-150" type="button">
+<span class="material-symbols-outlined text-body-lg">arrow_back</span>
+</button>
+<!-- Culinary Badge / Small Indicator -->
+<div class="flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-surface-container-low border border-surface-container-high">
+<span class="material-symbols-outlined text-primary-container text-body-sm" style="font-variation-settings: 'FILL' 1;">restaurant_menu</span>
+<span class="font-label-sm text-label-sm text-outline">CHEF PORTAL</span>
+</div>
+<!-- Close Action -->
+<button aria-label="Dismiss" class="w-11 h-11 rounded-xl bg-surface-container border border-surface-container-high text-on-surface flex items-center justify-center active:scale-95 hover:border-primary-container/40 transition-all duration-150" type="button">
+<span class="material-symbols-outlined text-body-lg">close</span>
+</button>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col justify-center py-space-sm">
+<!-- App Brand & Icon Anchor -->
+<div class="flex flex-col items-center text-center mb-space-lg">
+<!-- Logo Badge with Warm Ring -->
+<div class="relative mb-space-sm flex items-center justify-center">
+<div class="absolute inset-0 rounded-full bg-primary-container/20 blur-md scale-110"></div>
+<div class="w-16 h-16 rounded-full bg-surface-container-high border-2 border-primary-container/50 flex items-center justify-center relative shadow-lg shadow-black/40">
+<span class="material-symbols-outlined text-3xl text-primary-container material-symbols-fill">skillet</span>
+</div>
+</div>
+<!-- CookSmart Branding Headline -->
+<h1 class="font-display-mobile text-display-mobile font-bold tracking-tight text-on-surface">
+          Cook<span class="text-primary-container">Smart</span>
+</h1>
+<!-- Welcome Text -->
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mt-space-sm font-bold">
+          Welcome back, Chef!
+        </h2>
+<p class="font-body-md text-body-md text-outline mt-space-xs max-w-xs leading-relaxed">
+          Sign in to access your saved recipes and AI kitchen.
+        </p>
+</div>
+<!-- Sign-In Form Card Container -->
+<div class="w-full bg-surface-container-low rounded-xl border border-surface-container-high p-space-md shadow-2xl backdrop-blur-sm relative">
+<form class="space-y-space-md" onsubmit="event.preventDefault();">
+<!-- Email Input Group -->
+<div class="space-y-space-xs">
+<label class="block font-label-md text-label-md text-on-surface font-semibold" for="email">
+              Email Address
+            </label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-space-md text-outline text-body-lg pointer-events-none">
+                mail
+              </span>
+<input class="w-full h-12 pl-11 pr-space-md bg-surface border border-surface-container-high rounded-lg text-on-surface placeholder:text-outline font-body-md text-body-md focus:border-primary-container focus:ring-1 focus:ring-primary-container focus:outline-none transition-colors" id="email" name="email" placeholder="chef@cooksmart.io" required="" type="email"/>
+</div>
+</div>
+<!-- Password Input Group -->
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between">
+<label class="block font-label-md text-label-md text-on-surface font-semibold" for="password">
+                Password
+              </label>
+<a class="font-label-sm text-label-sm text-primary-container hover:text-primary transition-colors duration-150" href="#">
+                Forgot Password?
+              </a>
+</div>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-space-md text-outline text-body-lg pointer-events-none">
+                lock
+              </span>
+<input class="w-full h-12 pl-11 pr-11 bg-surface border border-surface-container-high rounded-lg text-on-surface placeholder:text-outline font-body-md text-body-md focus:border-primary-container focus:ring-1 focus:ring-primary-container focus:outline-none transition-colors" id="password" name="password" placeholder="••••••••••••" required="" type="password"/>
+<button aria-label="Toggle password visibility" class="absolute right-0 h-12 w-11 flex items-center justify-center text-outline hover:text-on-surface transition-colors" id="togglePassword" type="button">
+<span class="material-symbols-outlined text-body-lg" id="eyeIcon">
+                  visibility
+                </span>
+</button>
+</div>
+</div>
+<!-- Primary Submit Button -->
+<div class="pt-space-xs">
+<button class="w-full h-12 bg-primary-container text-white font-label-lg text-label-lg rounded-lg flex items-center justify-center gap-space-sm active:scale-[0.98] hover:brightness-105 transition-all duration-150 shadow-md shadow-primary-container/20 font-bold" type="submit">
+<span>Sign In</span>
+<span class="material-symbols-outlined text-body-lg">arrow_forward</span>
+</button>
+</div>
+</form>
+<!-- Or Divider -->
+<div class="relative my-space-md flex items-center justify-center">
+<div class="w-full border-t border-surface-container-high"></div>
+<span class="absolute bg-surface-container-low px-space-sm font-label-sm text-label-sm text-outline">
+            or continue with
+          </span>
+</div>
+<!-- Secondary Action: Guest Access -->
+<button class="w-full h-12 bg-surface border border-surface-container-high hover:border-primary-container/60 text-on-surface font-label-md text-label-md rounded-lg flex items-center justify-center gap-space-sm active:scale-[0.98] transition-all duration-150" type="button">
+<span class="material-symbols-outlined text-primary-container material-symbols-fill text-body-lg">
+            auto_awesome
+          </span>
+<span>Continue as Guest (Try AI Cook)</span>
+</button>
+</div>
+<!-- Sign Up Direct Link -->
+<div class="text-center mt-space-md">
+<p class="font-body-md text-body-md text-outline">
+          Don't have an account? 
+          <a class="font-label-lg text-label-lg text-primary-container hover:text-primary font-bold ml-1 transition-colors" href="#">
+            Sign Up
+          </a>
+</p>
+</div>
+</main>
+<!-- Footer Mobile Indicator -->
+<footer class="w-full pt-space-xs flex flex-col items-center">
+<div class="w-32 h-1 bg-surface-container-high rounded-full"></div>
+</footer>
+</div>
+<!-- Interactive Password Toggle Script -->
+<script>
+    const toggleBtn = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+    const eyeIcon = document.getElementById('eyeIcon');
+
+    if (toggleBtn && passwordInput && eyeIcon) {
+      toggleBtn.addEventListener('click', () => {
+        const isPassword = passwordInput.getAttribute('type') === 'password';
+        passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+        eyeIcon.textContent = isPassword ? 'visibility_off' : 'visibility';
+      });
+    }
+  </script>
+</body></html>
