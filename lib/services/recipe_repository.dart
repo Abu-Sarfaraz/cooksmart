@@ -150,11 +150,11 @@ class RecipeRepository extends ChangeNotifier {
     }
   }
 
-  Future<void> syncFromFirestore([String? userId]) async {
+  Future<bool> syncFromFirestore([String? userId]) async {
     try {
-      if (Firebase.apps.isEmpty) return;
+      if (Firebase.apps.isEmpty) return false;
       final uid = userId ?? FirebaseAuth.instance.currentUser?.uid;
-      if (uid == null) return;
+      if (uid == null) return false;
 
       final snapshot = await FirebaseFirestore.instance
           .collection('users')
@@ -172,8 +172,10 @@ class RecipeRepository extends ChangeNotifier {
         await _saveToLocal();
         notifyListeners();
       }
+      return true;
     } catch (e) {
       debugPrint("Firestore sync error: $e");
+      return false;
     }
   }
 }

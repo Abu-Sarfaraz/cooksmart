@@ -126,7 +126,25 @@ class _InputScreenState extends State<InputScreen> {
       widget.onRecipeGenerated(recipe);
       widget.onNavigateTab(2); // Go to Recipe Result
     } catch (e) {
-      final cleanError = e.toString().replaceFirst('Exception: ', '');
+      String cleanError = e.toString().replaceFirst('Exception: ', '').trim();
+      final lower = cleanError.toLowerCase();
+
+      if (lower.contains('socket') ||
+          lower.contains('failed host lookup') ||
+          lower.contains('clientexception') ||
+          lower.contains('xmlhttprequest') ||
+          lower.contains('network')) {
+        cleanError = "Could not connect to the internet. Please check your connection and try again.";
+      } else if (lower.contains('timeout') || lower.contains('timed out')) {
+        cleanError = "Chef AI took too long to answer. Please try again.";
+      } else if (lower.contains('busy') || lower.contains('quota') || lower.contains('429')) {
+        cleanError = "Chef AI is busy right now. Please wait a moment and try again.";
+      } else if (lower.contains('404') || lower.contains('not found')) {
+        cleanError = "Could not reach Chef AI right now. Please try again.";
+      } else if (cleanError.isEmpty || lower.contains('formatexception') || lower.contains('syntaxerror')) {
+        cleanError = "Could not read the recipe response. Please try again.";
+      }
+
       setState(() {
         _errorMessage = cleanError;
       });
@@ -137,7 +155,7 @@ class _InputScreenState extends State<InputScreen> {
             duration: const Duration(seconds: 4),
             content: Row(
               children: [
-                const Icon(Icons.error_outline, color: Colors.white, size: 20),
+                const Icon(Icons.info_outline, color: Colors.white, size: 20),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(

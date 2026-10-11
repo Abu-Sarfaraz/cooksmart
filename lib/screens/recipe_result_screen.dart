@@ -60,9 +60,25 @@ class _RecipeResultScreenState extends State<RecipeResultScreen> {
         );
       }
     } catch (e) {
+      String friendlyMsg = "Could not change the recipe right now. Please try again.";
+      final errStr = e.toString().toLowerCase();
+      if (errStr.contains('socket') ||
+          errStr.contains('failed host lookup') ||
+          errStr.contains('clientexception') ||
+          errStr.contains('network')) {
+        friendlyMsg = "Could not connect to the internet. Please check your connection and try again.";
+      } else if (errStr.contains('timeout') || errStr.contains('timed out')) {
+        friendlyMsg = "Chef AI took too long to answer. Please try again.";
+      } else if (errStr.contains('busy') || errStr.contains('quota')) {
+        friendlyMsg = "Chef AI is busy right now. Please wait a moment and try again.";
+      }
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Failed to adjust recipe: $e"), backgroundColor: Colors.redAccent),
+          SnackBar(
+            content: Text(friendlyMsg),
+            backgroundColor: Colors.redAccent,
+            behavior: SnackBarBehavior.floating,
+          ),
         );
       }
     } finally {

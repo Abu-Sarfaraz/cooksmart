@@ -192,10 +192,18 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       trailing: const Icon(Icons.chevron_right),
                       onTap: () async {
-                        await repo.syncFromFirestore();
+                        final success = await repo.syncFromFirestore();
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text("Cloud sync completed! ✨")),
+                            SnackBar(
+                              content: Text(
+                                success
+                                    ? "Cloud sync completed! ✨"
+                                    : "Could not sync recipes right now. Please check your internet connection.",
+                              ),
+                              backgroundColor: success ? AppColors.primary : Colors.redAccent,
+                              behavior: SnackBarBehavior.floating,
+                            ),
                           );
                         }
                       },

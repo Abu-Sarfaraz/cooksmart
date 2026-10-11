@@ -49,7 +49,9 @@ class _AuthScreenState extends State<AuthScreen> {
       }
       widget.onLoginSuccess();
     } catch (e) {
-      String errorMessage = "Sign in failed. Please check your email and password.";
+      String errorMessage = !_isLogin
+          ? "Could not sign up. Please check your details."
+          : "Sign in failed. Please check your email and password.";
       final errStr = e.toString().toLowerCase();
       if (errStr.contains('user-not-found')) {
         errorMessage = "No account found with this email. Please sign up.";
@@ -130,21 +132,44 @@ class _AuthScreenState extends State<AuthScreen> {
             ),
             onPressed: () async {
               final email = resetEmailController.text.trim();
-              if (email.isNotEmpty) {
-                try {
-                  await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-                  if (ctx.mounted) Navigator.pop(ctx);
-                  if (mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Password reset email sent! Check your inbox.")),
-                    );
-                  }
-                } catch (e) {
-                  if (mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Error: ${e.toString()}")),
-                    );
-                  }
+              if (email.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Please enter your email address."),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+                return;
+              }
+              try {
+                await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+                if (ctx.mounted) Navigator.pop(ctx);
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Password reset email sent! Check your inbox."),
+                      behavior: SnackBarBehavior.floating,
+                    ),
+                  );
+                }
+              } catch (e) {
+                String resetError = "Could not send reset link. Please check your email and try again.";
+                final errStr = e.toString().toLowerCase();
+                if (errStr.contains('user-not-found')) {
+                  resetError = "No account found with this email.";
+                } else if (errStr.contains('invalid-email')) {
+                  resetError = "Please enter a valid email address.";
+                } else if (errStr.contains('network-request-failed')) {
+                  resetError = "No internet connection. Please try again later.";
+                }
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: Colors.redAccent,
+                      content: Text(resetError),
+                      behavior: SnackBarBehavior.floating,
+                    ),
+                  );
                 }
               }
             },

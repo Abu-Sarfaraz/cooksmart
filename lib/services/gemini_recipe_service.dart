@@ -11,18 +11,16 @@ class GeminiRecipeService {
 
   // Tier 1: Ultra-fast & Cost-efficient (1-3 ingredients, simple constraints)
   static const List<String> _tier1Models = [
-    'gemini-2.5-flash-lite',
     'gemini-1.5-flash',
-    'gemini-2.0-flash-lite',
-    'gemini-3.5-flash-lite',
+    'gemini-2.0-flash',
+    'gemini-1.5-flash-8b',
   ];
 
   // Tier 2: High-reasoning & Gourmet Precision (4+ ingredients or complex diets)
   static const List<String> _tier2Models = [
-    'gemini-2.5-flash',
+    'gemini-1.5-flash',
     'gemini-2.0-flash',
     'gemini-1.5-pro',
-    'gemini-3.5-flash',
   ];
 
   /// Cache key generator
@@ -156,7 +154,7 @@ Return ONLY valid JSON with updated name, ingredients, steps, and chefTip follow
     List<String> models,
     Map<String, dynamic> requestBody,
   ) async {
-    String lastErrorMessage = 'Could not generate recipe at this moment.';
+    String friendlyErrorMessage = 'Could not make the recipe right now. Please try again.';
 
     for (final model in models) {
       final Uri url = Uri.parse(
@@ -189,27 +187,36 @@ Return ONLY valid JSON with updated name, ingredients, steps, and chefTip follow
             }
           }
         } else if (response.statusCode == 503 || response.statusCode == 429) {
+          friendlyErrorMessage = 'Chef AI is busy right now. Please wait a moment and try again.';
           continue; // High demand: cascade to next model
+        } else if (response.statusCode == 404) {
+          continue; // Model endpoint unavailable: cascade to next model
         } else {
           try {
             final errJson = jsonDecode(response.body);
-            if (errJson['error'] != null && errJson['error']['message'] != null) {
-              lastErrorMessage = errJson['error']['message'];
+            final msg = (errJson['error']?['message']?.toString() ?? '').toLowerCase();
+            if (msg.contains('quota') || msg.contains('rate limit')) {
+              friendlyErrorMessage = 'Chef AI is busy right now. Please wait a moment and try again.';
+            } else if (msg.contains('api key') || msg.contains('unauthenticated')) {
+              friendlyErrorMessage = 'Chef AI is not configured properly. Please check your API key.';
             }
           } catch (_) {}
         }
       } catch (e) {
-        if (e.toString().contains('Failed host lookup') ||
-            e.toString().contains('SocketException') ||
-            e.toString().contains('ClientException')) {
-          throw Exception('Network connection error. Please check your internet connection.');
+        final errText = e.toString().toLowerCase();
+        if (errText.contains('failed host lookup') ||
+            errText.contains('socketexception') ||
+            errText.contains('clientexception') ||
+            errText.contains('network') ||
+            errText.contains('connection')) {
+          throw Exception('Could not connect to the internet. Please check your connection and try again.');
+        } else if (errText.contains('timeoutexception') || errText.contains('timed out')) {
+          friendlyErrorMessage = 'Chef AI took too long to answer. Please try again.';
         }
         continue;
       }
     }
 
-    throw Exception(lastErrorMessage.isNotEmpty
-        ? lastErrorMessage
-        : 'AI culinary servers are momentarily busy. Please try again in a moment.');
+    throw Exception(friendlyErrorMessage);
   }
 }
