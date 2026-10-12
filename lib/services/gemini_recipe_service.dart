@@ -4,23 +4,27 @@ import '../models/recipe_model.dart';
 import '../config/api_keys.dart';
 
 class GeminiRecipeService {
-  static const String _apiKey = geminiApiKey;
+  static const String _primaryApiKey = geminiApiKey;
+  static const String _alternativeApiKey = String.fromEnvironment('GEMINI_FALLBACK_API_KEY', defaultValue: '');
+  static String _currentApiKey = _primaryApiKey;
 
   // In-memory LRU cache to save API costs for identical recipe requests
   static final Map<String, RecipeModel> _recipeCache = {};
 
   // Tier 1: Ultra-fast & Cost-efficient (1-3 ingredients, simple constraints)
   static const List<String> _tier1Models = [
-    'gemini-1.5-flash',
-    'gemini-2.0-flash',
-    'gemini-1.5-flash-8b',
+    'gemini-3.5-flash-lite',
+    'gemini-flash-lite-latest',
+    'gemini-3.5-flash',
+    'gemini-flash-latest',
   ];
 
   // Tier 2: High-reasoning & Gourmet Precision (4+ ingredients or complex diets)
   static const List<String> _tier2Models = [
-    'gemini-1.5-flash',
-    'gemini-2.0-flash',
-    'gemini-1.5-pro',
+    'gemini-3.5-flash',
+    'gemini-flash-latest',
+    'gemini-3.5-flash-lite',
+    'gemini-flash-lite-latest',
   ];
 
   /// Cache key generator
@@ -155,10 +159,11 @@ Return ONLY valid JSON with updated name, ingredients, steps, and chefTip follow
     Map<String, dynamic> requestBody,
   ) async {
     String friendlyErrorMessage = 'Could not make the recipe right now. Please try again.';
+    bool triedAlternative = false;
 
     for (final model in models) {
       final Uri url = Uri.parse(
-        'https://generativelanguage.googleapis.com/v1beta/models/$model:generateContent?key=$_apiKey',
+        'https://generativelanguage.googleapis.com/v1beta/models/$model:generateContent?key=$_currentApiKey',
       );
 
       try {
@@ -171,6 +176,8 @@ Return ONLY valid JSON with updated name, ingredients, steps, and chefTip follow
             .timeout(const Duration(seconds: 15));
 
         if (response.statusCode == 200) {
+          // Reset to primary after a successful request
+          _currentApiKey = _primaryApiKey;
           final Map<String, dynamic> data = jsonDecode(response.body);
           final candidates = data['candidates'] as List<dynamic>?;
           if (candidates != null && candidates.isNotEmpty) {
@@ -186,6 +193,16 @@ Return ONLY valid JSON with updated name, ingredients, steps, and chefTip follow
               return RecipeModel.fromJson(parsedRecipe);
             }
           }
+        } else if (response.statusCode == 401 || response.statusCode == 403) {
+          // Authentication error – switch to alternative key if not already tried
+          if (!triedAlternative) {
+            _currentApiKey = _alternativeApiKey;
+            triedAlternative = true;
+            // Retry this model with the alternative key
+            continue;
+          } else {
+            friendlyErrorMessage = 'Chef AI is not configured properly. Please check your API key.';
+          }
         } else if (response.statusCode == 503 || response.statusCode == 429) {
           friendlyErrorMessage = 'Chef AI is busy right now. Please wait a moment and try again.';
           continue; // High demand: cascade to next model
@@ -198,9 +215,16 @@ Return ONLY valid JSON with updated name, ingredients, steps, and chefTip follow
             if (msg.contains('quota') || msg.contains('rate limit')) {
               friendlyErrorMessage = 'Chef AI is busy right now. Please wait a moment and try again.';
             } else if (msg.contains('api key') || msg.contains('unauthenticated')) {
-              friendlyErrorMessage = 'Chef AI is not configured properly. Please check your API key.';
+              if (!triedAlternative) {
+                _currentApiKey = _alternativeApiKey;
+                triedAlternative = true;
+                continue;
+              } else {
+                friendlyErrorMessage = 'Chef AI is not configured properly. Please check your API key.';
+              }
             }
           } catch (_) {}
+          continue;
         }
       } catch (e) {
         final errText = e.toString().toLowerCase();
@@ -217,6 +241,8 @@ Return ONLY valid JSON with updated name, ingredients, steps, and chefTip follow
       }
     }
 
+    // Ensure we reset to primary before throwing
+    _currentApiKey = _primaryApiKey;
     throw Exception(friendlyErrorMessage);
   }
 }

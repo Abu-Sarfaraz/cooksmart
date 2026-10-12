@@ -260,7 +260,7 @@ class ProfileScreen extends StatelessWidget {
 
               const SizedBox(height: 16),
               Text(
-                "CookSmart AI • v1.0.0 (Release Build)",
+                "CookSmart AI • v1.0.5 (Release Build)",
                 style: TextStyle(color: AppColors.muted(context), fontSize: 11),
               )
             ],

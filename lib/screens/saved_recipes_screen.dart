@@ -498,6 +498,7 @@ class _SavedRecipesScreenState extends State<SavedRecipesScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text("Removed ${r.name}"),
+            duration: const Duration(seconds: 3),
             action: SnackBarAction(label: "Undo", onPressed: () => repo.saveRecipe(r)),
           ),
         );
@@ -559,6 +560,7 @@ class _SavedRecipesScreenState extends State<SavedRecipesScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text("Removed ${r.name}"),
+        duration: const Duration(seconds: 3),
         action: SnackBarAction(label: "Undo", onPressed: () => repo.saveRecipe(r)),
       ),
     );

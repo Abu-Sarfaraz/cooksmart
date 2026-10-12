@@ -89,10 +89,14 @@ class MainShellScreen extends StatefulWidget {
 
 class _MainShellScreenState extends State<MainShellScreen> {
   int _currentIndex = 0;
+  final List<int> _tabHistory = [0];
   RecipeModel _currentRecipe = RecipeModel.defaultRecipe();
 
   void _navigateToTab(int index) {
+    if (_currentIndex == index) return;
     setState(() {
+      _tabHistory.remove(index);
+      _tabHistory.add(index);
       _currentIndex = index;
     });
   }
@@ -135,7 +139,18 @@ class _MainShellScreenState extends State<MainShellScreen> {
       const ProfileScreen(),
     ];
 
-    return Scaffold(
+    return PopScope(
+      canPop: _tabHistory.length <= 1,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        if (_tabHistory.length > 1) {
+          setState(() {
+            _tabHistory.removeLast();
+            _currentIndex = _tabHistory.last;
+          });
+        }
+      },
+      child: Scaffold(
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 250),
         transitionBuilder: (Widget child, Animation<double> animation) {
@@ -194,6 +209,7 @@ class _MainShellScreenState extends State<MainShellScreen> {
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

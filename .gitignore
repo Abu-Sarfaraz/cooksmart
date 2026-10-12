@@ -49,3 +49,4 @@ app.*.map.json
 
 # Local API keys
 lib/config/api_keys.dart
+.opencode/
