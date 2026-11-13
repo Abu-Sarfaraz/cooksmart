@@ -282,7 +282,7 @@ class _SavedRecipesScreenState extends State<SavedRecipesScreen> {
                         onPressed: () => widget.onNavigateTab(1),
                         icon: const Icon(Icons.add, color: Colors.white, size: 20),
                         label: const Text(
-                          "+ Generate New AI Recipe",
+                          "Generate New AI Recipe",
                           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
                         ),
                         style: ElevatedButton.styleFrom(

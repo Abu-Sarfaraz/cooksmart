@@ -195,14 +195,21 @@ class _RecipeResultScreenState extends State<RecipeResultScreen> {
                           ),
                         ),
                         const SizedBox(height: 12),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            _SpecBadge(icon: "⏱️", text: _currentRecipe.cookingTime),
-                            _SpecBadge(icon: "🔥", text: _currentRecipe.calories),
-                            _SpecBadge(icon: "👥", text: _currentRecipe.servings),
-                            _SpecBadge(icon: "⭐", text: _currentRecipe.rating),
-                          ],
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          physics: const BouncingScrollPhysics(),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              _SpecBadge(icon: "⏱️", text: _currentRecipe.cookingTime),
+                              const SizedBox(width: 6),
+                              _SpecBadge(icon: "🔥", text: _currentRecipe.calories),
+                              const SizedBox(width: 6),
+                              _SpecBadge(icon: "👥", text: _currentRecipe.servings),
+                              const SizedBox(width: 6),
+                              _SpecBadge(icon: "⭐", text: _currentRecipe.rating),
+                            ],
+                          ),
                         )
                       ],
                     ),
