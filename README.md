@@ -159,6 +159,14 @@ Monitor cooking activity stats, toggle theme preferences, and sync recipes acros
 - **Optional Cloud Sync**: Authenticated users can back up their cookbook to Cloud Firestore (`users/{uid}/recipes`) for seamless multi-device access.
 - **Guest Mode Support**: CookSmart remains 100% usable in offline/guest mode without mandatory registration.
 
+### 📋 9. Mise en Place Checklist & One-Tap Recipe Sharing
+- **Interactive Prep Checklist**: Cross off ingredients as you prepare your kitchen counter (mise en place), with reactive checkboxes.
+- **One-Tap Export**: Copy the raw ingredient list or export the full recipe formatted with title, cooking time, calories, steps, and chef tips directly to the clipboard for sharing.
+
+### 🛡️ 10. Seamless Navigation & Self-Service Account Security
+- **Multi-Tab Back Stack (PopScope)**: System back navigation navigates sequentially through your tab history before exiting the app.
+- **In-App Password Recovery**: Registered chefs can easily trigger password reset emails directly from the authentication screen without leaving the app.
+
 ---
 
 ## 🏗️ Architecture & Tech Stack
